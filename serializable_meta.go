@@ -70,7 +70,7 @@ func (serialize *SerializableMeta) GetSerializableArgument(serializableMetaInter
 	}
 
 	if res := serializableMetaInterface.GetSerializableArgumentResource(); res != nil {
-		value := res.NewStruct()
+		value := res.NewStruct(nil)
 		json.Unmarshal([]byte(serialize.Value.SerializedValue), value)
 		return value
 	}

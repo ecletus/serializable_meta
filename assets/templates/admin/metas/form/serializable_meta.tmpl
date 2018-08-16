@@ -4,7 +4,7 @@
   <div class="qor-field">
     <div class="qor-field__block">
       <fieldset id="{{.InputId}}">
-        {{render_nested_form $value.Value (edit_sections $value.Resource) -1}}
+        {{render_nested_form $value.Value .Meta (edit_sections $value.Resource) -1}}
       </fieldset>
     </div>
   </div>

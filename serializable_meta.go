@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/qor/admin"
-	"github.com/qor/qor"
-	"github.com/qor/qor/resource"
-	"github.com/qor/qor/utils"
+	"github.com/aghape/admin"
+	"github.com/aghape/aghape"
+	"github.com/aghape/aghape/resource"
+	"github.com/aghape/aghape/utils"
 )
 
 // SerializableMetaInterface is a interface defined methods need for a serializable model
@@ -85,8 +85,6 @@ func (serialize *SerializableMeta) SetSerializableArgumentValue(value interface{
 // ConfigureQorResourceBeforeInitialize configure qor resource for qor admin
 func (serialize *SerializableMeta) ConfigureQorResourceBeforeInitialize(res resource.Resourcer) {
 	if res, ok := res.(*admin.Resource); ok {
-		res.GetAdmin().RegisterViewPath("github.com/qor/serializable_meta/views")
-
 		if _, ok := res.Value.(SerializableMetaInterface); ok {
 			if res.GetMeta("Kind") == nil {
 				res.Meta(&admin.Meta{
@@ -101,8 +99,9 @@ func (serialize *SerializableMeta) ConfigureQorResourceBeforeInitialize(res reso
 
 						return value.(SerializableMetaInterface).GetSerializableArgumentKind()
 					},
-					Setter: func(value interface{}, metaValue *resource.MetaValue, context *qor.Context) {
+					Setter: func(value interface{}, metaValue *resource.MetaValue, context *qor.Context) error {
 						value.(SerializableMetaInterface).SetSerializableArgumentKind(utils.ToString(metaValue.Value))
+						return nil
 					},
 				})
 			}
@@ -129,7 +128,7 @@ func (serialize *SerializableMeta) ConfigureQorResourceBeforeInitialize(res reso
 						}
 						return nil
 					},
-					Setter: func(result interface{}, metaValue *resource.MetaValue, context *qor.Context) {
+					Setter: func(result interface{}, metaValue *resource.MetaValue, context *qor.Context) error {
 						if serializeArgument, ok := result.(SerializableMetaInterface); ok {
 							if serializeArgumentResource := serializeArgument.GetSerializableArgumentResource(); serializeArgumentResource != nil {
 								var clearUpRecord, fillUpRecord func(record interface{}, metaors []resource.Metaor, metaValues []*resource.MetaValue)
@@ -210,13 +209,13 @@ func (serialize *SerializableMeta) ConfigureQorResourceBeforeInitialize(res reso
 								}
 
 								fillUpRecord(value, serializeArgumentResource.GetMetas([]string{}), metaValue.MetaValues.Values)
-
 								for _, fc := range serializeArgumentResource.Processors {
 									context.AddError(fc(value, metaValue.MetaValues, context))
 								}
 								serializeArgument.SetSerializableArgumentValue(value)
 							}
 						}
+						return nil
 					},
 				})
 			}

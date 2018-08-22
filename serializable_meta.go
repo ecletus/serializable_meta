@@ -8,9 +8,9 @@ import (
 	"reflect"
 
 	"github.com/aghape/admin"
-	"github.com/aghape/aghape"
-	"github.com/aghape/aghape/resource"
-	"github.com/aghape/aghape/utils"
+	"github.com/aghape/core"
+	"github.com/aghape/core/resource"
+	"github.com/aghape/core/utils"
 )
 
 // SerializableMetaInterface is a interface defined methods need for a serializable model
@@ -90,7 +90,7 @@ func (serialize *SerializableMeta) ConfigureQorResourceBeforeInitialize(res reso
 				res.Meta(&admin.Meta{
 					Name: "Kind",
 					Type: "hidden",
-					Valuer: func(value interface{}, context *qor.Context) interface{} {
+					Valuer: func(value interface{}, context *core.Context) interface{} {
 						defer func() {
 							if r := recover(); r != nil {
 								utils.ExitWithMsg("SerializableMeta: Can't Get Kind")
@@ -99,7 +99,7 @@ func (serialize *SerializableMeta) ConfigureQorResourceBeforeInitialize(res reso
 
 						return value.(SerializableMetaInterface).GetSerializableArgumentKind()
 					},
-					Setter: func(value interface{}, metaValue *resource.MetaValue, context *qor.Context) error {
+					Setter: func(value interface{}, metaValue *resource.MetaValue, context *core.Context) error {
 						value.(SerializableMetaInterface).SetSerializableArgumentKind(utils.ToString(metaValue.Value))
 						return nil
 					},
@@ -110,7 +110,7 @@ func (serialize *SerializableMeta) ConfigureQorResourceBeforeInitialize(res reso
 				res.Meta(&admin.Meta{
 					Name: "SerializableMeta",
 					Type: "serializable_meta",
-					Valuer: func(value interface{}, context *qor.Context) interface{} {
+					Valuer: func(value interface{}, context *core.Context) interface{} {
 						if serializeArgument, ok := value.(SerializableMetaInterface); ok {
 							return struct {
 								Value    interface{}
@@ -122,13 +122,13 @@ func (serialize *SerializableMeta) ConfigureQorResourceBeforeInitialize(res reso
 						}
 						return nil
 					},
-					FormattedValuer: func(value interface{}, context *qor.Context) interface{} {
+					FormattedValuer: func(value interface{}, context *core.Context) interface{} {
 						if serializeArgument, ok := value.(SerializableMetaInterface); ok {
 							return serializeArgument.GetSerializableArgument(serializeArgument)
 						}
 						return nil
 					},
-					Setter: func(result interface{}, metaValue *resource.MetaValue, context *qor.Context) error {
+					Setter: func(result interface{}, metaValue *resource.MetaValue, context *core.Context) error {
 						if serializeArgument, ok := result.(SerializableMetaInterface); ok {
 							if serializeArgumentResource := serializeArgument.GetSerializableArgumentResource(); serializeArgumentResource != nil {
 								var clearUpRecord, fillUpRecord func(record interface{}, metaors []resource.Metaor, metaValues []*resource.MetaValue)

@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/aghape/admin"
-	"github.com/aghape/core"
-	"github.com/aghape/core/resource"
-	"github.com/aghape/core/utils"
+	"github.com/ecletus/admin"
+	"github.com/ecletus/core"
+	"github.com/ecletus/core/resource"
+	"github.com/ecletus/core/utils"
 )
 
 // SerializableMetaInterface is a interface defined methods need for a serializable model

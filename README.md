@@ -2,7 +2,7 @@
 
 Serializable Meta allows the developer to specify, for a given model, a custom serialization model along with field mappings. This mechanism thus allows one model to act as another model when it comes to serialization.
 
-[![GoDoc](https://godoc.org/github.com/aghape/serializable_meta?status.svg)](https://godoc.org/github.com/aghape/serializable_meta)
+[![GoDoc](https://godoc.org/github.com/ecletus/serializable_meta?status.svg)](https://godoc.org/github.com/ecletus/serializable_meta)
 
 ## Documentation
 

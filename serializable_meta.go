@@ -83,7 +83,7 @@ func (serialize *SerializableMeta) SetSerializableArgumentValue(value interface{
 }
 
 // ConfigureQorResourceBeforeInitialize configure qor resource for qor admin
-func (serialize *SerializableMeta) ConfigureQorResourceBeforeInitialize(res resource.Resourcer) {
+func (serialize *SerializableMeta) ConfigureResourceBeforeInitialize(res resource.Resourcer) {
 	if res, ok := res.(*admin.Resource); ok {
 		if _, ok := res.Value.(SerializableMetaInterface); ok {
 			if res.GetMeta("Kind") == nil {
@@ -93,7 +93,7 @@ func (serialize *SerializableMeta) ConfigureQorResourceBeforeInitialize(res reso
 					Valuer: func(value interface{}, context *core.Context) interface{} {
 						defer func() {
 							if r := recover(); r != nil {
-								utils.ExitWithMsg("SerializableMeta: Can't Get Kind")
+								panic(fmt.Errorf("SerializableMeta: Can't Get Kind: %v", r))
 							}
 						}()
 
